@@ -1,0 +1,33 @@
+# Compilação
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Dependências
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.history/*
+*.sublime-workspace
+
+# Angular
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Pacotes de entrega temporários
+/.tmp-entrega

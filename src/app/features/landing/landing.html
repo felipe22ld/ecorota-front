@@ -1,0 +1,139 @@
+<app-cabecalho-publico />
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="bg-eco-claro py-5">
+    <div class="container py-lg-4">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="eco-eyebrow">Reciclagem mais perto de você</span>
+          <h1 class="eco-display mb-4">Seu reciclável encontra um novo caminho.</h1>
+          <p class="eco-subtitulo mb-4" style="max-width: 30rem">
+            Conectamos quem precisa descartar com catadores e profissionais que recolhem na sua região.
+          </p>
+          <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+            <a routerLink="/cadastro" class="btn btn-primary">
+              Começar agora <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+            <a routerLink="/" fragment="como-funciona" class="btn-link-eco small">Entenda como funciona</a>
+          </div>
+          <p class="small text-secondary mb-0">Uma rede feita para moradores, comércios e catadores.</p>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="hero-foto">
+            <span class="hero-chip">
+              <span class="ponto"></span> 12 coletas disponíveis perto de você
+            </span>
+
+            <div class="hero-kg card-eco">
+              <i class="bi bi-recycle text-eco-verde fs-4"></i>
+              <div>
+                <strong class="d-block">+2.480 kg</strong>
+                <small class="text-secondary">reciclados este mês</small>
+              </div>
+            </div>
+
+            <div class="hero-pills">
+              <span>Papel</span>
+              <span>Plástico</span>
+              <span>Metal</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PASSO A PASSO ============ -->
+  <section id="como-funciona" class="py-5 bg-white">
+    <div class="container py-lg-4">
+      <span class="eco-eyebrow">Passo a passo</span>
+      <h2 class="eco-titulo mb-5">Fácil para quem descarta.<br />Melhor para quem coleta.</h2>
+
+      <div class="row g-3">
+        @for (p of passos; track p.titulo; let i = $index) {
+          <div class="col-md-4">
+            <div class="card-passo h-100">
+              <span class="numero">0{{ i + 1 }}</span>
+              <div class="mt-auto">
+                <h3 class="h6 fw-semibold mb-2">{{ p.titulo }}</h3>
+                <p class="small text-secondary mb-0">{{ p.texto }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ESCOLHA SEU CAMINHO ============ -->
+  <section id="para-quem" class="py-5 bg-eco-secao">
+    <div class="container py-lg-4">
+      <span class="eco-eyebrow">Escolha seu caminho</span>
+      <h2 class="eco-titulo mb-5">Como você quer fazer<br />parte dessa rede?</h2>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card-caminho bg-white h-100">
+            <span class="icone-circulo redondo"><i class="bi bi-geo-alt"></i></span>
+            <span class="eco-eyebrow mt-4 mb-1">Para geradores</span>
+            <h3 class="h4 fw-normal">Quero descartar</h3>
+            <p class="small text-secondary">Encontre alguém para recolher os recicláveis da sua casa ou negócio.</p>
+            <a routerLink="/cadastro" [queryParams]="{ perfil: 'Gerador' }" class="link-caminho mt-auto">
+              Solicitar uma coleta <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card-caminho bg-eco-navy text-white h-100">
+            <span class="icone-circulo redondo bg-white text-eco-navy"><i class="bi bi-recycle"></i></span>
+            <span class="eco-eyebrow mt-4 mb-1 text-white-50">Para catadores</span>
+            <h3 class="h4 fw-normal text-white">Quero recolher</h3>
+            <p class="small text-white-50">Encontre materiais próximos, organize sua rota e gere novas oportunidades.</p>
+            <a routerLink="/cadastro" [queryParams]="{ perfil: 'Catador' }" class="link-caminho claro mt-auto">
+              Ver materiais disponíveis <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BENEFÍCIOS ============ -->
+  <section id="beneficios" class="py-5 bg-white">
+    <div class="container py-lg-4">
+      <span class="eco-eyebrow">Benefícios</span>
+      <h2 class="eco-titulo mb-5">Bom para sua rotina. Melhor para<br class="d-none d-md-inline" /> toda a cidade.</h2>
+
+      <div class="row g-3">
+        @for (b of beneficios; track b.titulo; let i = $index) {
+          <div class="col-sm-6 col-lg-3">
+            <div class="card-beneficio h-100" [class]="b.fundo">
+              <span class="small">0{{ i + 1 }}</span>
+              <i class="bi {{ b.icone }} icone"></i>
+              <h3 class="h6 fw-semibold mb-2">{{ b.titulo }}</h3>
+              <p class="small text-secondary mb-0">{{ b.texto }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHAMADA FINAL ============ -->
+  <section class="bg-eco-verde text-white text-center py-5">
+    <div class="container py-lg-5">
+      <span class="eco-eyebrow text-white">Comece pelo seu bairro</span>
+      <h2 class="eco-display text-white mx-auto mb-4" style="max-width: 46rem">
+        Todo material tem valor quando encontra as pessoas certas.
+      </h2>
+      <p class="small mb-4">Crie seu perfil gratuitamente e ajude a reciclagem a circular.</p>
+      <a routerLink="/cadastro" class="btn btn-branco btn-sm px-3">
+        Começar agora <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+  </section>
+</main>
+
+<app-rodape />

@@ -1,0 +1,242 @@
+<app-layout-cadastro>
+  @switch (etapa()) {
+    @case (1) {
+      <app-stepper [etapa]="1" titulo="Escolher Perfil" />
+      <h2 class="h3 fw-normal mb-1">Como você quer usar a EcoRota?</h2>
+      <p class="small text-secondary mb-4">Escolha uma opção para personalizarmos sua experiência.</p>
+
+      <div class="d-grid gap-3 mb-4" role="radiogroup">
+        <button type="button" class="opcao" role="radio" [attr.aria-checked]="perfil() === 'Gerador'" [class.ativo]="perfil() === 'Gerador'" (click)="perfil.set('Gerador')">
+          <span class="icone-circulo"><i class="bi bi-geo-alt"></i></span>
+          <span>
+            <span class="opcao-titulo">Quero descartar</span>
+            <span class="opcao-desc">Para moradores e comércios que têm materiais recicláveis.</span>
+          </span>
+          <span class="radio"></span>
+        </button>
+
+        <button type="button" class="opcao navy" role="radio" [attr.aria-checked]="perfil() === 'Catador'" [class.ativo]="perfil() === 'Catador'" (click)="perfil.set('Catador')">
+          <span class="icone-circulo navy"><i class="bi bi-recycle"></i></span>
+          <span>
+            <span class="opcao-titulo">Quero recolher</span>
+            <span class="opcao-desc">Para catadores e prestadores que realizam coletas.</span>
+          </span>
+          <span class="radio"></span>
+        </button>
+      </div>
+
+      <button type="button" class="btn btn-eco-escuro w-100" [disabled]="!perfil()" (click)="continuarEtapa1()">
+        Continuar <i class="bi bi-arrow-right ms-1"></i>
+      </button>
+
+      <p class="text-center small text-secondary mt-4 mb-0">
+        Já tem uma conta? <a routerLink="/login">Entrar</a>
+      </p>
+    }
+
+    @case (2) {
+      <app-stepper [etapa]="2" titulo="Dados Básicos" />
+      <button type="button" class="btn-link-eco small mb-3" (click)="irPara(1)"><i class="bi bi-arrow-left"></i> Voltar</button>
+      <h2 class="h3 fw-normal mb-1">Seus dados básicos</h2>
+      <p class="small text-secondary mb-4">Use informações que você acessa com frequência.</p>
+
+      <form [formGroup]="basico" (ngSubmit)="continuarEtapa2()" novalidate>
+        <div class="mb-3">
+          <label class="form-label" for="nome">Nome completo</label>
+          <input id="nome" class="form-control" formControlName="nome" placeholder="Seu nome" autocomplete="name" />
+          <app-erro-campo [controle]="basico.controls.nome" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="telefone">Telefone/ WhatsApp</label>
+          <input id="telefone" type="tel" class="form-control" formControlName="telefone" appMascara="telefone" placeholder="(11) 12345-6789" autocomplete="tel" />
+          <app-erro-campo [controle]="basico.controls.telefone" />
+          <div class="form-text">Você vai confirmar esse número pelo Telegram. Ele também será seu login.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="senha">Senha</label>
+          <div class="position-relative">
+            <input id="senha" [type]="verSenha() ? 'text' : 'password'" class="form-control pe-5" formControlName="senha" placeholder="Crie uma senha" autocomplete="new-password" />
+            <button type="button" class="btn btn-sm position-absolute top-50 end-0 translate-middle-y me-1 text-secondary" (click)="verSenha.set(!verSenha())" [attr.aria-label]="verSenha() ? 'Ocultar senha' : 'Mostrar senha'">
+              <i class="bi" [class.bi-eye]="!verSenha()" [class.bi-eye-slash]="verSenha()"></i>
+            </button>
+          </div>
+          <app-erro-campo [controle]="basico.controls.senha" />
+          <div class="form-text">Mínimo de 8 caracteres, com letra maiúscula, minúscula, número e caractere especial (ex.: @, #, !).</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label" for="email">E-mail</label>
+          <input id="email" type="email" class="form-control" formControlName="email" placeholder="voce@exemplo.com" autocomplete="email" />
+          <app-erro-campo [controle]="basico.controls.email" />
+        </div>
+
+        @if (erro()) {
+          <div class="alert alert-danger small py-2">{{ erro() }}</div>
+        }
+
+        <button type="submit" class="btn btn-eco-escuro w-100">
+          Continuar <i class="bi bi-arrow-right ms-1"></i>
+        </button>
+      </form>
+    }
+
+    @case (3) {
+      <app-stepper [etapa]="3" titulo="Dados do Perfil" />
+      <button type="button" class="btn-link-eco small mb-3" (click)="irPara(2)"><i class="bi bi-arrow-left"></i> Voltar</button>
+
+      @if (perfil() === 'Catador') {
+        <!-- ----- Catador: onde recolhe ----- -->
+        <h2 class="h3 fw-normal mb-1">Onde você recolhe?</h2>
+        <p class="small text-secondary mb-4">Informe a região onde deseja encontrar materiais.</p>
+
+        <form [formGroup]="catador" (ngSubmit)="enviarCadastro()" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="cidade">Cidade</label>
+            <input id="cidade" class="form-control" formControlName="cidade" placeholder="Ex.: São Paulo" autocomplete="address-level2" />
+            <app-erro-campo [controle]="catador.controls.cidade" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="bairro">Bairro de atuação</label>
+            <input id="bairro" class="form-control" formControlName="bairro" placeholder="Ex.: Campo Elíseos" [readonly]="!catador.controls.cidade.value" />
+            <app-erro-campo [controle]="catador.controls.bairro" />
+            <div class="form-text">Preencha a cidade para adicionar o bairro</div>
+          </div>
+
+          <div class="mb-3">
+            <span class="form-label d-block">Materiais que recolhe</span>
+            <div class="chips">
+              @for (m of materiais; track m.valor) {
+                <button type="button" class="chip" [class.ativo]="temMaterial(m.valor)" [attr.aria-pressed]="temMaterial(m.valor)" (click)="alternarMaterial(m.valor)">
+                  {{ m.rotulo }}
+                </button>
+              }
+            </div>
+            <app-erro-campo [controle]="catador.controls.materiais" />
+          </div>
+
+          @if (temMaterial('Outros')) {
+            <div class="mb-3">
+              <label class="form-label" for="outros">Qual outro material?</label>
+              <input id="outros" class="form-control" formControlName="outrosMateriais" placeholder="Ex.: Orgânicos" />
+              <app-erro-campo [controle]="catador.controls.outrosMateriais" />
+            </div>
+          }
+
+          @if (erro()) {
+            <div class="alert alert-danger small py-2">{{ erro() }}</div>
+          }
+
+          <button type="submit" class="btn btn-eco-escuro w-100 mt-2" [disabled]="enviando()">
+            @if (enviando()) {
+              <span class="spinner-border spinner-border-sm me-2"></span> Criando conta...
+            } @else {
+              Continuar <i class="bi bi-arrow-right ms-1"></i>
+            }
+          </button>
+        </form>
+      } @else {
+        <!-- ----- Gerador: onde será a coleta ----- -->
+        <h2 class="h3 fw-normal mb-1">Onde será a coleta?</h2>
+        <p class="small text-secondary mb-4">Use o endereço onde os materiais ficam disponíveis.</p>
+
+        <form [formGroup]="gerador" (ngSubmit)="enviarCadastro()" novalidate>
+          <span class="form-label d-block">Tipo de local</span>
+          <div class="segmentado mb-3">
+            <button type="button" [class.ativo]="gerador.controls.tipoLocal.value === 'Casa'" (click)="escolherTipoLocal('Casa')">Casa</button>
+            <button type="button" [class.ativo]="gerador.controls.tipoLocal.value === 'Comercio'" (click)="escolherTipoLocal('Comercio')">Comércio</button>
+          </div>
+
+          @if (gerador.controls.tipoLocal.value === 'Comercio') {
+            <div class="mb-3">
+              <label class="form-label" for="estabelecimento">Nome do estabelecimento</label>
+              <input id="estabelecimento" class="form-control" formControlName="nomeEstabelecimento" placeholder="Ex.: Padaria Pão Quentinho" />
+              <app-erro-campo [controle]="gerador.controls.nomeEstabelecimento" />
+            </div>
+          }
+
+          <div formGroupName="endereco" class="row g-3">
+            <div class="col-5">
+              <label class="form-label" for="cep">CEP</label>
+              <div class="position-relative">
+                <input id="cep" class="form-control" formControlName="cep" appMascara="cep" placeholder="12345-678" inputmode="numeric" autocomplete="postal-code" (blur)="buscarCep()" />
+                @if (buscandoCep()) {
+                  <span class="spinner-border spinner-border-sm position-absolute top-50 end-0 translate-middle-y me-2 text-secondary"></span>
+                }
+              </div>
+              <app-erro-campo [controle]="gerador.get('endereco.cep')" />
+            </div>
+            <div class="col-7">
+              <label class="form-label" for="logradouro">Rua/ Endereço</label>
+              <input id="logradouro" class="form-control" formControlName="logradouro" placeholder="Rua Sapiranga" autocomplete="address-line1" />
+              <app-erro-campo [controle]="gerador.get('endereco.logradouro')" />
+            </div>
+
+            <div class="col-5">
+              <label class="form-label" for="numero">Número</label>
+              <input id="numero" class="form-control" formControlName="numero" placeholder="874" />
+              <app-erro-campo [controle]="gerador.get('endereco.numero')" />
+            </div>
+            <div class="col-7">
+              <label class="form-label" for="complemento">Complemento</label>
+              <input id="complemento" class="form-control" formControlName="complemento" placeholder="Apto, bloco ou referência" />
+              <div class="form-text">Opcional</div>
+            </div>
+
+            <div class="col-5">
+              <label class="form-label" for="bairroG">Bairro</label>
+              <input id="bairroG" class="form-control" formControlName="bairro" placeholder="Jardim Leonor" />
+              <app-erro-campo [controle]="gerador.get('endereco.bairro')" />
+            </div>
+            <div class="col-7">
+              <label class="form-label" for="cidadeG">Cidade</label>
+              <input id="cidadeG" class="form-control" formControlName="cidade" placeholder="São Paulo - SP" autocomplete="address-level2" />
+              <app-erro-campo [controle]="gerador.get('endereco.cidade')" />
+            </div>
+          </div>
+
+          @if (erro()) {
+            <div class="alert alert-danger small py-2 mt-3">{{ erro() }}</div>
+          }
+
+          <button type="submit" class="btn btn-eco-escuro w-100 mt-4" [disabled]="enviando()">
+            @if (enviando()) {
+              <span class="spinner-border spinner-border-sm me-2"></span> Criando conta...
+            } @else {
+              Continuar <i class="bi bi-arrow-right ms-1"></i>
+            }
+          </button>
+        </form>
+      }
+    }
+
+    @case (4) {
+      <app-stepper [etapa]="4" titulo="Confirmar Telefone" />
+      <app-confirmar-telegram
+        [link]="cadastro()?.linkConfirmacaoTelegram ?? ''"
+        [telefone]="basico.controls.telefone.value"
+        [senha]="basico.controls.senha.value"
+        (confirmado)="telefoneConfirmado()"
+      />
+    }
+
+    @case (5) {
+      <div class="text-center py-3">
+        <span class="icone-circulo redondo solido mb-2"><i class="bi bi-shield-check"></i></span>
+        <span class="eco-eyebrow d-block">Tudo certo</span>
+        <h2 class="h3 fw-normal mb-2">Conta criada com sucesso!</h2>
+        <p class="small text-secondary mb-4">
+          Seu perfil está pronto. Agora você já pode começar a fazer parte da rede EcoRota.
+        </p>
+        <button type="button" class="btn btn-eco-escuro btn-sm px-3" [disabled]="entrando()" (click)="irParaInicio()">
+          @if (entrando()) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          }
+          Ir para a página inicial <i class="bi bi-arrow-right ms-1"></i>
+        </button>
+      </div>
+    }
+  }
+</app-layout-cadastro>

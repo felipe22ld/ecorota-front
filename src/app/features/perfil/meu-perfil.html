@@ -1,0 +1,130 @@
+<div class="pagina-app">
+  <div class="container">
+    <nav class="breadcrumb-eco">
+      <a [routerLink]="base()">Home</a><span>/</span>
+      <span class="atual">Meu perfil</span>
+    </nav>
+
+    <div class="row g-4">
+      <!-- Cartão lateral -->
+      <div class="col-lg-4">
+        <div class="card-borda p-4 text-center">
+          <span class="icone-circulo mb-3" style="width: 4rem; height: 4rem; font-size: 1.8rem"><i class="bi bi-person"></i></span>
+          <h1 class="h5 fw-normal mb-0">{{ usuario()?.nome }}</h1>
+          <small class="text-secondary">{{ ehCatador() ? 'Prestador' : 'Gerador' }}</small>
+          <hr />
+          <div class="d-grid gap-2 text-start small">
+            @if (ehCatador()) {
+              <a routerLink="/catador/coletas" class="d-flex justify-content-between text-body">Minhas coletas <i class="bi bi-arrow-right"></i></a>
+            } @else {
+              <a routerLink="/gerador/solicitacoes" class="d-flex justify-content-between text-body">Minhas solicitações <i class="bi bi-arrow-right"></i></a>
+            }
+            <button type="button" class="btn-link-eco text-danger text-start" (click)="sair()">Sair</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8 d-grid gap-4">
+        <!-- Dados pessoais (vêm da API) -->
+        <section class="card-borda p-4">
+          <h2 class="h4 fw-normal mb-1">Dados pessoais</h2>
+          <p class="small text-secondary mb-4">Informações usadas para identificar você na plataforma.</p>
+
+          <form [formGroup]="dados" class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="pNome">Nome</label>
+              <input id="pNome" class="form-control" formControlName="nome" />
+              <app-erro-campo [controle]="dados.controls.nome" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="pTel">Telefone</label>
+              <input id="pTel" type="tel" class="form-control" formControlName="telefone" appMascara="telefone" />
+              <app-erro-campo [controle]="dados.controls.telefone" />
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="pEmail">E-mail</label>
+              <input id="pEmail" type="email" class="form-control" formControlName="email" />
+            </div>
+          </form>
+        </section>
+
+        @if (ehCatador()) {
+          <!-- Região de atuação (Catador) -->
+          <section class="card-borda p-4">
+            <div class="d-flex justify-content-between align-items-start">
+              <h2 class="h4 fw-normal mb-1">Região de atuação</h2>
+              <app-selo-mock />
+            </div>
+            <p class="small text-secondary mb-4">Onde você recolhe e quais materiais aceita.</p>
+
+            <form [formGroup]="regiao" class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="rCidade">Cidade</label>
+                <input id="rCidade" class="form-control" formControlName="cidade" placeholder="Ex.: São Paulo" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="rBairro">Bairro de atuação</label>
+                <input id="rBairro" class="form-control" formControlName="bairro" placeholder="Ex.: Campo Elíseos" />
+              </div>
+              <div class="col-12">
+                <span class="form-label d-block">Materiais que recolhe</span>
+                <div class="chips">
+                  @for (m of materiais; track m.valor) {
+                    <button type="button" class="chip" [class.ativo]="regiao.controls.materiais.value.includes(m.valor)" (click)="alternarMaterial(m.valor)">{{ m.rotulo }}</button>
+                  }
+                </div>
+              </div>
+            </form>
+          </section>
+        } @else {
+          <!-- Endereço principal (Gerador) -->
+          <section class="card-borda p-4">
+            <div class="d-flex justify-content-between align-items-start">
+              <h2 class="h4 fw-normal mb-1">Endereço principal</h2>
+              <app-selo-mock />
+            </div>
+            <p class="small text-secondary mb-4">Este endereço será usado como padrão nas solicitações.</p>
+
+            <form [formGroup]="endereco" class="row g-3">
+              <div class="col-12">
+                <span class="form-label d-block">Tipo de local</span>
+                <div class="segmentado">
+                  <button type="button" [class.ativo]="endereco.controls.tipoLocal.value === 'Casa'" (click)="endereco.controls.tipoLocal.setValue('Casa')">Casa</button>
+                  <button type="button" [class.ativo]="endereco.controls.tipoLocal.value === 'Comercio'" (click)="endereco.controls.tipoLocal.setValue('Comercio')">Comércio</button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="eCep">CEP</label>
+                <input id="eCep" class="form-control" formControlName="cep" appMascara="cep" placeholder="12345-678" />
+                <app-erro-campo [controle]="endereco.controls.cep" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="eRua">Rua/ Endereço</label>
+                <input id="eRua" class="form-control" formControlName="logradouro" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="eNum">Número</label>
+                <input id="eNum" class="form-control" formControlName="numero" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="eComp">Complemento</label>
+                <input id="eComp" class="form-control" formControlName="complemento" placeholder="Apto, bloco ou referência" />
+                <div class="form-text">Opcional</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="eBairro">Bairro</label>
+                <input id="eBairro" class="form-control" formControlName="bairro" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="eCidade">Cidade</label>
+                <input id="eCidade" class="form-control" formControlName="cidade" />
+              </div>
+            </form>
+          </section>
+        }
+
+        <button type="button" class="btn btn-eco-escuro w-100" (click)="salvar()">Salvar alterações</button>
+      </div>
+    </div>
+  </div>
+</div>

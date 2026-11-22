@@ -1,0 +1,75 @@
+.tela-login {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 992px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.painel {
+  flex-direction: column;
+  padding: 2.5rem 3rem;
+  color: #fff;
+  background:
+    radial-gradient(circle at 75% 15%, rgba(255, 255, 255, 0.16), transparent 40%),
+    radial-gradient(circle at 20% 85%, rgba(255, 255, 255, 0.1), transparent 45%),
+    #3c7852;
+
+  .avatar {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    color: #3c7852;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+
+  @media (min-width: 992px) {
+    padding: 3rem;
+  }
+}
+
+.formulario {
+  width: 100%;
+  max-width: 26rem;
+  margin: 0 auto;
+}
+
+.campo-icone {
+  position: relative;
+
+  > i {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5f6661;
+    pointer-events: none;
+  }
+
+  .form-control {
+    padding-left: 2.6rem;
+  }
+}
+
+.btn-olho {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 0;
+  background: none;
+  color: #5f6661;
+  padding: 0.25rem 0.4rem;
+}

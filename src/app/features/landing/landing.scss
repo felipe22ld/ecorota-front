@@ -1,0 +1,121 @@
+// Foto do hero: coloque a imagem do Figma em public/images/hero.jpg.
+// Enquanto ela não existir, aparece só o degradê verde.
+.hero-foto {
+  position: relative;
+  min-height: 380px;
+  border-radius: 2rem 2rem 2rem 0.75rem;
+  background-image: url('/images/hero.jpg'), linear-gradient(135deg, #5d9a70 0%, #2c5b3b 100%);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 24px 48px -24px rgba(20, 40, 28, 0.55);
+}
+
+.hero-chip {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  .ponto {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #3c7852;
+  }
+}
+
+.hero-kg {
+  position: absolute;
+  left: -1.25rem;
+  bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+
+  @media (max-width: 575.98px) {
+    left: 0.75rem;
+  }
+}
+
+.hero-pills {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  gap: 0.4rem;
+
+  span {
+    background: #1f3451;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+}
+
+.card-passo {
+  display: flex;
+  flex-direction: column;
+  min-height: 15rem;
+  padding: 1.25rem;
+  background: #ebf5ed;
+  border: 1px solid #d6e9da;
+  border-radius: 0.75rem;
+
+  .numero {
+    align-self: flex-start;
+    background: #cfe8d6;
+    border-radius: 0.35rem;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+}
+
+.card-caminho {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border-radius: 1rem;
+  min-height: 20rem;
+}
+
+.link-caminho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #1b1b1b;
+  padding-top: 0.9rem;
+  color: #1b1b1b;
+  font-size: 0.85rem;
+  text-decoration: none;
+
+  &.claro {
+    color: #fff;
+    border-top-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+.card-beneficio {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border-radius: 0.85rem;
+  min-height: 16rem;
+
+  .icone {
+    font-size: 2.2rem;
+    color: #2c5b3b;
+    margin: auto 0 1rem;
+  }
+}

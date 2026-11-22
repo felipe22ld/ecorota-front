@@ -1,0 +1,621 @@
+// =====================================================================
+// EcoRota — tema do Bootstrap ajustado ao Figma ([GRUPO 2] EcoRota)
+// =====================================================================
+
+// ---- Paleta (cores medidas nas telas do Figma) ----
+$eco-verde: #3c7852; // verde principal (landing, botões, painel do login)
+$eco-verde-escuro: #2c5b3b; // botões "Continuar" do cadastro e do app
+$eco-verde-claro: #ebf5ed; // fundos suaves (hero, cards selecionados)
+$eco-navy: #1f3451; // "Criar conta", card "Quero recolher", botões secundários
+$eco-cinza-fundo: #f0f2f1; // fundo das telas internas e do cadastro
+$eco-cinza-secao: #e4e6e5; // seção "Escolha seu caminho"
+$eco-azul-claro: #ecf0f9; // card "Quero recolher" selecionado, avisos
+$eco-laranja-claro: #fae1b8;
+$eco-borda: #d7d7d7;
+$eco-texto: #1b1b1b;
+$eco-texto-suave: #5f6661;
+
+// ---- Variáveis do Bootstrap ----
+$primary: $eco-verde;
+$secondary: $eco-navy;
+$success: $eco-verde;
+$danger: #c0392b;
+$warning: #e8a33d;
+$info: #4a6fa5;
+$light: $eco-cinza-fundo;
+$dark: $eco-texto;
+
+$body-color: $eco-texto;
+$body-bg: #ffffff;
+$secondary-color: $eco-texto-suave;
+
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-size-base: 0.95rem;
+$headings-font-weight: 400;
+$headings-color: $eco-texto;
+
+$border-color: $eco-borda;
+$border-radius: 0.5rem;
+$border-radius-sm: 0.375rem;
+$border-radius-lg: 0.75rem;
+$border-radius-xl: 1rem;
+
+$input-border-color: $eco-borda;
+$input-padding-y: 0.7rem;
+$input-padding-x: 0.9rem;
+$input-focus-border-color: $eco-verde;
+$input-placeholder-color: #9aa19c;
+$form-label-font-weight: 600;
+$form-label-font-size: 0.82rem;
+
+$btn-padding-y: 0.65rem;
+$btn-padding-x: 1.1rem;
+$btn-font-weight: 600;
+$btn-font-size: 0.9rem;
+
+$link-color: $eco-verde;
+$link-decoration: none;
+$link-hover-decoration: underline;
+
+$navbar-light-color: $eco-texto;
+
+@import 'bootstrap/scss/bootstrap';
+
+// =====================================================================
+// Base
+// =====================================================================
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  font-weight: 600;
+}
+
+.form-label {
+  margin-bottom: 0.35rem;
+}
+
+.form-text {
+  font-size: 0.78rem;
+}
+
+.invalid-feedback {
+  font-size: 0.78rem;
+}
+
+// =====================================================================
+// Tipografia
+// =====================================================================
+.eco-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $eco-verde;
+  margin-bottom: 0.75rem;
+}
+
+.eco-display {
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+}
+
+.eco-titulo {
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+}
+
+.eco-subtitulo {
+  color: $eco-texto-suave;
+}
+
+// =====================================================================
+// Cores utilitárias
+// =====================================================================
+.bg-eco-claro {
+  background-color: $eco-verde-claro !important;
+}
+.bg-eco-cinza {
+  background-color: $eco-cinza-fundo !important;
+}
+.bg-eco-secao {
+  background-color: $eco-cinza-secao !important;
+}
+.bg-eco-navy {
+  background-color: $eco-navy !important;
+}
+.bg-eco-verde {
+  background-color: $eco-verde !important;
+}
+.bg-eco-azul {
+  background-color: $eco-azul-claro !important;
+}
+.bg-eco-laranja {
+  background-color: $eco-laranja-claro !important;
+}
+.text-eco-verde {
+  color: $eco-verde !important;
+}
+.text-eco-navy {
+  color: $eco-navy !important;
+}
+
+// =====================================================================
+// Botões
+// =====================================================================
+.btn-eco-escuro {
+  @include button-variant($eco-verde-escuro, $eco-verde-escuro, $white);
+}
+
+.btn-navy {
+  @include button-variant($eco-navy, $eco-navy, $white);
+}
+
+.btn-branco {
+  @include button-variant($white, $white, $eco-verde-escuro);
+}
+
+.btn-link-eco {
+  font-weight: 600;
+  color: $eco-verde-escuro;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.btn:disabled,
+.btn.disabled {
+  background-color: #cacecd;
+  border-color: #cacecd;
+  color: #f3f4f4;
+  opacity: 1;
+}
+
+// =====================================================================
+// Cards
+// =====================================================================
+.card-eco {
+  background: $white;
+  border: 1px solid rgba($eco-texto, 0.06);
+  border-radius: $border-radius-xl;
+  box-shadow: 0 12px 32px -18px rgba(20, 40, 28, 0.35);
+}
+
+.card-borda {
+  background: $white;
+  border: 1px solid #e2e5e3;
+  border-radius: $border-radius-lg;
+}
+
+.icone-circulo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  background: $eco-verde-claro;
+  color: $eco-verde;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+
+  &.redondo {
+    border-radius: 50%;
+  }
+
+  &.navy {
+    background: $eco-azul-claro;
+    color: $eco-navy;
+  }
+
+  &.solido {
+    background: $eco-verde-escuro;
+    color: $white;
+  }
+}
+
+// =====================================================================
+// Abas segmentadas (Telefone/E-mail, Casa/Comércio, Retirada única/Fixa)
+// =====================================================================
+.segmentado {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: $eco-cinza-fundo;
+  border-radius: $border-radius;
+
+  button {
+    flex: 1;
+    border: 1px solid transparent;
+    background: transparent;
+    border-radius: $border-radius-sm;
+    padding: 0.55rem 0.75rem;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: $eco-texto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: background-color 0.15s, border-color 0.15s;
+
+    &.ativo {
+      background: $white;
+      border-color: $eco-verde;
+      color: $eco-verde-escuro;
+    }
+  }
+
+  &.grande button {
+    padding: 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  &.solto {
+    background: transparent;
+    padding: 0;
+    gap: 0.75rem;
+
+    button {
+      border-color: $eco-borda;
+      background: $white;
+
+      &.ativo {
+        background: $eco-verde-claro;
+        border-color: $eco-verde;
+      }
+    }
+  }
+}
+
+// =====================================================================
+// Chips (materiais, dias da semana)
+// =====================================================================
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  border: 1px solid $eco-borda;
+  background: $white;
+  border-radius: 999px;
+  padding: 0.4rem 0.95rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $eco-texto;
+  transition: background-color 0.15s, border-color 0.15s;
+
+  &.ativo {
+    background: $eco-verde-claro;
+    border-color: $eco-verde;
+    color: $eco-verde-escuro;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $eco-verde;
+    outline-offset: 2px;
+  }
+}
+
+// =====================================================================
+// Card de opção selecionável (perfil, volume)
+// =====================================================================
+.opcao {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid $eco-borda;
+  border-radius: $border-radius-lg;
+  background: $white;
+  transition: background-color 0.15s, border-color 0.15s;
+
+  .opcao-titulo {
+    font-weight: 600;
+    display: block;
+  }
+
+  .opcao-desc {
+    font-size: 0.82rem;
+    color: $eco-texto-suave;
+  }
+
+  .radio {
+    margin-left: auto;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    border: 2px solid #c9cecb;
+    flex-shrink: 0;
+  }
+
+  &.ativo {
+    background: $eco-verde-claro;
+    border-color: $eco-verde;
+
+    .radio {
+      border: 5px solid $eco-verde;
+    }
+  }
+
+  &.ativo.navy {
+    background: $eco-azul-claro;
+    border-color: $eco-navy;
+
+    .radio {
+      border-color: $eco-verde;
+    }
+  }
+}
+
+// =====================================================================
+// Stepper do cadastro (Etapa X de 4)
+// =====================================================================
+.stepper {
+  .stepper-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.78rem;
+    margin-bottom: 0.5rem;
+
+    strong {
+      font-size: 0.9rem;
+    }
+  }
+
+  .stepper-barras {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+
+    span {
+      height: 4px;
+      border-radius: 2px;
+      background: #e6e6e6;
+
+      &.feito {
+        background: $eco-verde;
+      }
+    }
+  }
+}
+
+// =====================================================================
+// Status das solicitações e etiquetas de material
+// =====================================================================
+.status {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+
+  &.aguardando {
+    background: #e07b2e;
+    color: $white;
+  }
+  &.aceito {
+    background: #dde6f5;
+    color: $eco-navy;
+  }
+  &.coletando {
+    background: #f6d776;
+    color: #5b4500;
+  }
+  &.coletado,
+  &.disponivel {
+    background: #cfe8d6;
+    color: $eco-verde-escuro;
+  }
+  &.recusado {
+    background: #f6c9c4;
+    color: #8f2a1f;
+  }
+}
+
+.tag-material {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: $white;
+
+  &.Papel {
+    background: $eco-navy;
+  }
+  &.Plastico {
+    background: #c0392b;
+  }
+  &.Metal {
+    background: #f4d35e;
+    color: #4a3b00;
+  }
+  &.Vidro {
+    background: $eco-verde;
+  }
+  &.Eletronicos {
+    background: #6b4fa0;
+  }
+  &.Outros {
+    background: #7b847e;
+  }
+}
+
+// =====================================================================
+// Grade de detalhes (Local / Material / Volume / Retirada)
+// =====================================================================
+.grade-detalhes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border: 1px solid #2b2b2b;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+
+  > div {
+    padding: 0.85rem 1rem;
+    border-right: 1px solid #2b2b2b;
+    border-bottom: 1px solid #2b2b2b;
+
+    &:nth-child(2n) {
+      border-right: 0;
+    }
+    &:nth-last-child(-n + 2) {
+      border-bottom: 0;
+    }
+  }
+
+  .rotulo {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+
+    i {
+      color: $eco-verde;
+    }
+  }
+
+  .valor {
+    font-size: 0.8rem;
+    color: $eco-texto-suave;
+  }
+
+  @include media-breakpoint-down(sm) {
+    grid-template-columns: 1fr;
+
+    > div {
+      border-right: 0;
+
+      &:nth-last-child(2) {
+        border-bottom: 1px solid #2b2b2b;
+      }
+    }
+  }
+}
+
+// =====================================================================
+// Tabelas do app
+// =====================================================================
+.tabela-eco {
+  background: $white;
+  border: 1px solid #e2e5e3;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+
+  table {
+    margin: 0;
+  }
+
+  th {
+    font-weight: 500;
+    font-size: 0.82rem;
+    color: $eco-texto-suave;
+    background: $eco-cinza-fundo;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #e2e5e3;
+  }
+
+  td {
+    font-size: 0.85rem;
+    padding: 0.8rem 1rem;
+    vertical-align: middle;
+  }
+}
+
+// Lista em cartões (substitui a tabela no celular)
+.lista-cartoes {
+  display: grid;
+  gap: 0.75rem;
+}
+
+// =====================================================================
+// Miscelânea
+// =====================================================================
+.breadcrumb-eco {
+  font-size: 0.75rem;
+  color: $eco-texto-suave;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+
+  a {
+    color: $eco-texto-suave;
+    font-weight: 400;
+  }
+
+  .atual {
+    color: $eco-navy;
+    font-weight: 600;
+  }
+}
+
+.aviso-suave {
+  background: $eco-azul-claro;
+  border-radius: $border-radius;
+  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+}
+
+.upload-foto {
+  border: 1px dashed $eco-navy;
+  background: $eco-azul-claro;
+  border-radius: $border-radius-lg;
+  padding: 1.25rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+
+  i {
+    font-size: 1.8rem;
+    color: $eco-verde;
+  }
+}
+
+.pagina-app {
+  background: $eco-cinza-fundo;
+  min-height: calc(100vh - 64px);
+  padding: 1.5rem 0 3rem;
+}
+
+.selo-mock {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #8a5a00;
+  background: #fff3d6;
+  border: 1px solid #f1d79a;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+
+.toast-container {
+  z-index: 1090;
+}

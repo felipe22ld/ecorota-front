@@ -1,0 +1,165 @@
+<div class="pagina-app">
+  <div class="container">
+    <nav class="breadcrumb-eco">
+      <a routerLink="/gerador">Home</a><span>/</span>
+      @if (modoContato()) {
+        <a routerLink="/gerador/prestadores">Prestadores próximos</a><span>/</span>
+        <span class="atual">Contato com prestador</span>
+      } @else {
+        <span class="atual">Nova solicitação</span>
+      }
+    </nav>
+
+    <div class="card-eco p-4 p-md-5 mx-auto" style="max-width: 44rem">
+      <div class="d-flex justify-content-between align-items-start gap-2">
+        <span class="eco-eyebrow">{{ modoContato() ? 'Contato com o prestador' : 'Nova Solicitação' }}</span>
+        @if (modoContato()) {
+          <app-selo-mock />
+        }
+      </div>
+      <h1 class="eco-titulo mb-2">O que você precisa descartar?</h1>
+      <p class="eco-subtitulo small mb-4">
+        @if (modoContato()) {
+          Preencha os dados da coleta. Ao continuar, montamos uma mensagem pronta no WhatsApp
+          @if (prestador()) { de <strong>{{ prestador()!.nome }}</strong> }.
+        } @else {
+          Preencha o necessário para publicar seu pedido para prestadores próximos.
+        }
+      </p>
+
+      <!-- Local -->
+      <div class="card-borda d-flex gap-3 align-items-center p-3 mb-4">
+        <span class="icone-circulo"><i class="bi bi-geo-alt"></i></span>
+        <div>
+          <strong class="d-block">Local de retirada</strong>
+          <span class="small">{{ endereco() }}</span>
+          <small class="d-block text-secondary">Endereço do cadastro</small>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+        <!-- Material -->
+        <h2 class="h6 fw-semibold mb-2">Tipo de material</h2>
+        <div class="chips mb-1">
+          @for (m of materiais; track m.valor) {
+            <button type="button" class="chip" [class.ativo]="form.controls.material.value === m.valor" (click)="escolherMaterial(m.valor)">
+              {{ m.rotulo }}
+            </button>
+          }
+        </div>
+        <app-erro-campo [controle]="form.controls.material" />
+
+        @if (form.controls.material.value === 'Outros') {
+          <div class="mt-3">
+            <label class="form-label" for="outro">Qual material?</label>
+            <input id="outro" class="form-control" formControlName="outroMaterial" placeholder="Ex.: Óleo de cozinha usado" />
+            <app-erro-campo [controle]="form.controls.outroMaterial" />
+          </div>
+        }
+
+        <!-- Volume -->
+        <h2 class="h6 fw-semibold mt-4 mb-2">Volume</h2>
+        <div class="row g-3 mb-2">
+          <div class="col-sm-6">
+            <button type="button" class="opcao h-100" [class.ativo]="form.controls.volume.value === 'Baixo'" (click)="form.controls.volume.setValue('Baixo')">
+              <span>
+                <span class="opcao-titulo">Baixo</span>
+                <span class="opcao-desc">Sacolas, caixas ou pequenas quantidades</span>
+              </span>
+            </button>
+          </div>
+          <div class="col-sm-6">
+            <button type="button" class="opcao h-100" [class.ativo]="form.controls.volume.value === 'Grande'" (click)="form.controls.volume.setValue('Grande')">
+              <span>
+                <span class="opcao-titulo">Grande</span>
+                <span class="opcao-desc">Móveis, muitos sacos ou grande quantidade</span>
+              </span>
+            </button>
+          </div>
+        </div>
+        @if (form.controls.volume.value === 'Baixo') {
+          <div class="aviso-suave mb-2">
+            Para quantidades pequenas, um <a routerLink="/gerador/pontos-descarte">ponto de descarte próximo</a> também pode ser prático.
+          </div>
+        }
+
+        <!-- Foto -->
+        <label class="upload-foto mt-3">
+          <i class="bi" [class.bi-plus-lg]="!nomeFoto()" [class.bi-image]="nomeFoto()"></i>
+          <span>
+            <strong class="d-block">{{ nomeFoto() || 'Adicionar foto' }}</strong>
+            <small class="text-secondary">Opcional, mas ajuda quem for recolher</small>
+          </span>
+          <input type="file" accept="image/*" class="d-none" (change)="escolherFoto($event)" />
+        </label>
+
+        <!-- Observações -->
+        <div class="d-flex justify-content-between mt-4 mb-2">
+          <label class="h6 fw-semibold mb-0" for="obs">Observações</label>
+          <small class="text-secondary">Opcional</small>
+        </div>
+        <textarea id="obs" class="form-control" rows="3" formControlName="observacoes" placeholder="Ex.: deixar na portaria, interfone 34, portão lateral"></textarea>
+        <app-erro-campo [controle]="form.controls.observacoes" />
+
+        <!-- Tipo de retirada -->
+        <h2 class="h6 fw-semibold mt-4 mb-2">Tipo de retirada</h2>
+        <div class="segmentado solto grande mb-3">
+          <button type="button" [class.ativo]="form.controls.tipoRetirada.value === 'Unica'" (click)="escolherRetirada('Unica')">Retirada única</button>
+          <button type="button" [class.ativo]="form.controls.tipoRetirada.value === 'Fixa'" (click)="escolherRetirada('Fixa')">Fixa / Recorrente</button>
+        </div>
+
+        <div class="bg-eco-cinza rounded-3 p-3 mb-4">
+          @if (form.controls.tipoRetirada.value === 'Unica') {
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <label class="form-label" for="data">Data da retirada</label>
+                <input id="data" type="date" class="form-control" formControlName="data" [min]="hoje" />
+                <app-erro-campo [controle]="form.controls.data" />
+              </div>
+              <div class="col-sm-6">
+                <label class="form-label" for="periodoU">Período</label>
+                <select id="periodoU" class="form-select" formControlName="periodo">
+                  @for (p of periodos; track p.valor) {
+                    <option [value]="p.valor">{{ p.rotulo }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          } @else {
+            <span class="form-label d-block">Dias da semana</span>
+            <div class="chips mb-1">
+              @for (d of dias; track d.valor) {
+                <button type="button" class="chip" [class.ativo]="form.controls.diasSemana.value.includes(d.valor)" (click)="alternarDia(d.valor)">
+                  {{ d.rotulo }}
+                </button>
+              }
+            </div>
+            @if (form.controls.diasSemana.touched && form.controls.diasSemana.invalid) {
+              <div class="invalid-feedback d-block">Escolha pelo menos um dia.</div>
+            }
+            <label class="form-label mt-3" for="periodoF">Período</label>
+            <select id="periodoF" class="form-select" formControlName="periodo">
+              @for (p of periodos; track p.valor) {
+                <option [value]="p.valor">{{ p.rotulo }}</option>
+              }
+            </select>
+          }
+          <p class="small text-secondary mt-3 mb-0">
+            Isso ajuda o prestador a se organizar. O horário final pode ser combinado depois.
+          </p>
+        </div>
+
+        <button type="submit" class="btn btn-eco-escuro w-100" [disabled]="enviando()">
+          @if (enviando()) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+          }
+          {{ modoContato() ? 'Continuar para WhatsApp' : 'Publicar solicitação' }}
+          <i class="bi bi-arrow-right ms-1"></i>
+        </button>
+        @if (modoContato()) {
+          <p class="small text-secondary text-center mt-2 mb-0">Você será levado ao WhatsApp com a mensagem pronta para enviar.</p>
+        }
+      </form>
+    </div>
+  </div>
+</div>

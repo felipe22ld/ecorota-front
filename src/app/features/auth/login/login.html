@@ -1,0 +1,121 @@
+<div class="tela-login">
+  <!-- Painel verde (desktop) -->
+  <aside class="painel d-none d-lg-flex">
+    <app-logo [claro]="true" />
+
+    <div class="my-auto">
+      <span class="eco-eyebrow text-white">Uma rede que transforma</span>
+      <h1 class="eco-display text-white mb-4">Conecte-se. Colete. Faça a diferença.</h1>
+      <p class="text-white-50 mb-0" style="max-width: 28rem">
+        Acesse sua conta para acompanhar coletas, conversar com a comunidade e ampliar seu impacto.
+      </p>
+    </div>
+
+    <div class="d-flex align-items-center gap-3">
+      <span class="avatar"><i class="bi bi-people"></i></span>
+      <div class="small">
+        <strong class="d-block">Mais perto, mais circular.</strong>
+        <span class="text-white-50">Moradores e catadores conectados no mesmo lugar.</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Formulário -->
+  <main class="conteudo">
+    <div class="d-lg-none mb-5"><app-logo /></div>
+
+    <div class="formulario">
+      <span class="eco-eyebrow">Bem-vindo de volta</span>
+      <h2 class="eco-titulo mb-2">Entre na sua conta</h2>
+      <p class="eco-subtitulo small mb-4">Escolha como você prefere acessar a plataforma.</p>
+
+      @if (expirou()) {
+        <div class="alert alert-warning small py-2">Sua sessão expirou. Entre novamente.</div>
+      }
+
+      <div class="segmentado mb-4" role="tablist">
+        <button type="button" role="tab" [class.ativo]="modo() === 'telefone'" (click)="trocarModo('telefone')">
+          <i class="bi bi-telephone"></i> Telefone
+        </button>
+        <button type="button" role="tab" [class.ativo]="modo() === 'email'" (click)="trocarModo('email')">
+          <i class="bi bi-envelope"></i> E-mail
+        </button>
+      </div>
+
+      @if (modo() === 'email') {
+        <div class="alert alert-info small py-2">
+          <i class="bi bi-info-circle"></i> O login agora é pelo telefone. Use a aba <strong>Telefone</strong>.
+        </div>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="entrar()" novalidate>
+        @if (modo() === 'email') {
+          <div class="mb-3">
+            <label class="form-label" for="email">Endereço de e-mail</label>
+            <div class="campo-icone">
+              <i class="bi bi-envelope"></i>
+              <input id="email" type="email" class="form-control" formControlName="email" placeholder="voce@email.com" autocomplete="email" />
+            </div>
+            <app-erro-campo [controle]="form.controls.email" />
+          </div>
+        } @else {
+          <div class="mb-3">
+            <label class="form-label" for="telefone">Número de telefone</label>
+            <div class="campo-icone">
+              <i class="bi bi-telephone"></i>
+              <input id="telefone" type="tel" class="form-control" formControlName="telefone" appMascara="telefone" placeholder="(00) 00000-0000" autocomplete="tel" />
+            </div>
+            <app-erro-campo [controle]="form.controls.telefone" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" for="senha">Senha</label>
+          <div class="campo-icone">
+            <i class="bi bi-lock"></i>
+            <input id="senha" [type]="verSenha() ? 'text' : 'password'" class="form-control pe-5" formControlName="senha" placeholder="Digite sua senha" autocomplete="current-password" />
+            <button type="button" class="btn-olho" (click)="verSenha.set(!verSenha())" [attr.aria-label]="verSenha() ? 'Ocultar senha' : 'Mostrar senha'">
+              <i class="bi" [class.bi-eye]="!verSenha()" [class.bi-eye-slash]="verSenha()"></i>
+            </button>
+          </div>
+          <app-erro-campo [controle]="form.controls.senha" />
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 small">
+          <div class="form-check mb-0">
+            <input class="form-check-input" type="checkbox" id="lembrar" formControlName="lembrar" />
+            <label class="form-check-label text-secondary" for="lembrar">Lembrar de mim</label>
+          </div>
+          <button type="button" class="btn-link-eco small" (click)="esqueciSenha()">Esqueci minha senha</button>
+        </div>
+
+        @if (erro()) {
+          <div class="alert alert-danger small py-2" role="alert">
+            {{ erro() }}
+            @if (linkTelegram(); as link) {
+              <div class="mt-2">
+                <a class="btn btn-sm btn-eco-escuro" [href]="link" target="_blank" rel="noopener">
+                  <i class="bi bi-telegram me-1"></i> Abrir o Telegram
+                </a>
+                <div class="mt-1 text-secondary">Depois de compartilhar seu número, toque em Entrar de novo.</div>
+              </div>
+            }
+          </div>
+        }
+
+        <button type="submit" class="btn btn-eco-escuro w-100" [disabled]="!podeEnviar">
+          @if (enviando()) {
+            <span class="spinner-border spinner-border-sm me-2"></span> Entrando...
+          } @else {
+            Entrar <i class="bi bi-arrow-right ms-1"></i>
+          }
+        </button>
+      </form>
+
+      <p class="text-center small text-secondary mt-4 mb-0">
+        Ainda não tem uma conta?
+        <a routerLink="/cadastro">Cadastre-se gratuitamente</a>
+      </p>
+    </div>
+  </main>
+</div>
